@@ -42,7 +42,7 @@ export default function DynamicForm({ sections, onSubmit, className }: DynamicFo
             value={formData[field.id] || ''}
             onChange={(e) => handleChange(field.id, e.target.value)}
             required={field.required}
-            className="min-h-[80px]"
+            className="min-h-[80px] min-w-[200px]"
           />
         );
       case 'select':
@@ -51,7 +51,7 @@ export default function DynamicForm({ sections, onSubmit, className }: DynamicFo
             value={formData[field.id] || ''}
             onValueChange={(value) => handleChange(field.id, value)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="min-w-[200px]">
               <SelectValue placeholder={field.placeholder} />
             </SelectTrigger>
             <SelectContent>
@@ -72,7 +72,7 @@ export default function DynamicForm({ sections, onSubmit, className }: DynamicFo
             value={formData[field.id] || ''}
             onChange={(e) => handleChange(field.id, e.target.value)}
             required={field.required}
-            className="w-full"
+            className="min-w-[200px]"
           />
         );
     }
@@ -89,16 +89,18 @@ export default function DynamicForm({ sections, onSubmit, className }: DynamicFo
                 <p className="text-sm text-gray-500 mt-1">{section.description}</p>
               )}
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
-              {section.fields.map((field) => (
-                <div key={field.id} className="space-y-2">
-                  <Label htmlFor={field.id} className="text-sm font-medium">
-                    {field.label}
-                    {field.required && <span className="text-red-500 ml-1">*</span>}
-                  </Label>
-                  {renderField(field)}
-                </div>
-              ))}
+            <div className="overflow-x-auto">
+              <div className="inline-flex gap-6 p-6 min-w-full">
+                {section.fields.map((field) => (
+                  <div key={field.id} className="space-y-2 flex-none">
+                    <Label htmlFor={field.id} className="text-sm font-medium">
+                      {field.label}
+                      {field.required && <span className="text-red-500 ml-1">*</span>}
+                    </Label>
+                    {renderField(field)}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         ))}
