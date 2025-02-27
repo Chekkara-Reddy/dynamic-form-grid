@@ -9,3 +9,10 @@ export interface FormField {
   options?: { value: string; label: string }[];
   required?: boolean;
 }
+
+export interface FormSection {
+  id: string;
+  title: string;
+  description?: string;
+  fields: FormField[];
+}

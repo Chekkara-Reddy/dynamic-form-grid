@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { FormField } from '@/types/form';
+import { FormField, FormSection } from '@/types/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -15,12 +15,12 @@ import {
 import { cn } from '@/lib/utils';
 
 interface DynamicFormProps {
-  fields: FormField[];
+  sections: FormSection[];
   onSubmit: (data: Record<string, any>) => void;
   className?: string;
 }
 
-export default function DynamicForm({ fields, onSubmit, className }: DynamicFormProps) {
+export default function DynamicForm({ sections, onSubmit, className }: DynamicFormProps) {
   const [formData, setFormData] = useState<Record<string, any>>({});
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -80,18 +80,30 @@ export default function DynamicForm({ fields, onSubmit, className }: DynamicForm
 
   return (
     <form onSubmit={handleSubmit} className={cn("w-full", className)}>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
-        {fields.map((field) => (
-          <div key={field.id} className="space-y-2">
-            <Label htmlFor={field.id} className="text-sm font-medium">
-              {field.label}
-              {field.required && <span className="text-red-500 ml-1">*</span>}
-            </Label>
-            {renderField(field)}
+      <div className="space-y-8">
+        {sections.map((section) => (
+          <div key={section.id} className="border-b border-gray-100 last:border-0">
+            <div className="px-6 py-4">
+              <h2 className="text-xl font-semibold text-gray-800">{section.title}</h2>
+              {section.description && (
+                <p className="text-sm text-gray-500 mt-1">{section.description}</p>
+              )}
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-6">
+              {section.fields.map((field) => (
+                <div key={field.id} className="space-y-2">
+                  <Label htmlFor={field.id} className="text-sm font-medium">
+                    {field.label}
+                    {field.required && <span className="text-red-500 ml-1">*</span>}
+                  </Label>
+                  {renderField(field)}
+                </div>
+              ))}
+            </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-end px-6 pt-4">
+      <div className="flex justify-end px-6 py-4 bg-gray-50 rounded-b-xl">
         <Button type="submit" className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
           Submit
         </Button>
